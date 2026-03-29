@@ -1,4 +1,4 @@
-const CACHE_NAME = 'topebyte-v2';
+const CACHE_NAME = 'topebyte-v3'; // Versión actualizada
 const ASSETS = [
   './',
   './index.html',
@@ -10,8 +10,10 @@ const ASSETS = [
 
 // Instalación: Guarda los archivos en la caché
 self.addEventListener('install', (e) => {
+  self.skipWaiting(); // Fuerza a que el nuevo SW se active inmediatamente
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
+      console.log('SW: Cacheando archivos');
       return cache.addAll(ASSETS);
     })
   );
@@ -19,6 +21,7 @@ self.addEventListener('install', (e) => {
 
 // Activación: Limpia versiones viejas de la caché
 self.addEventListener('activate', (e) => {
+  console.log('SW: Activado');
   e.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
