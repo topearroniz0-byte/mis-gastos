@@ -1,125 +1,72 @@
-let gastos = JSON.parse(localStorage.getItem('topebyte_gastos')) || [];
-let totalGeneral = 0;
+let gastos = JSON.parse(localStorage.getItem('tope_gastos')) || [];
 
-window.onload = () => {
-    actualizarInterfaz();
-};
-
-function guardarEnLocal() {
-    localStorage.setItem('topebyte_gastos', JSON.stringify(gastos));
-}
+window.onload = () => actualizarInterfaz();
 
 function agregarGasto() {
-    const productoInput = document.getElementById('producto');
-    const cantidadInput = document.getElementById('cantidad');
-    const precioInput = document.getElementById('precio');
+    const prod = document.getElementById('producto').value;
+    const cant = parseFloat(document.getElementById('cantidad').value);
+    const prec = parseFloat(document.getElementById('precio').value);
 
-    const producto = productoInput.value.trim();
-    const cantidad = parseFloat(cantidadInput.value);
-    const precio = parseFloat(precioInput.value);
-    
-    if (producto && !isNaN(cantidad) && cantidad > 0 && !isNaN(precio) && precio > 0) {
-        const subtotal = cantidad * precio;
-        gastos.push({ producto, cantidad, precio, subtotal });
-        
-        guardarEnLocal();
+    if (prod && cant > 0 && prec > 0) {
+        gastos.push({ 
+            nombre: prod, 
+            cantidad: cant, 
+            precio: prec, 
+            total: cant * prec 
+        });
+        localStorage.setItem('tope_gastos', JSON.stringify(gastos));
         actualizarInterfaz();
         
-        // Limpiar campos y quitar foco para ocultar teclado en móvil
-        productoInput.value = '';
-        cantidadInput.value = '';
-        precioInput.value = '';
-        productoInput.blur(); 
+        // Limpiar campos
+        document.getElementById('producto').value = '';
+        document.getElementById('cantidad').value = '';
+        document.getElementById('precio').value = '';
     } else {
-        alert("Por favor, rellena todos los campos con valores válidos.");
+        alert("Introduce datos válidos");
     }
-}
-
-function actualizarInterfaz() {
-    actualizarListaGastos();
-    actualizarBarras();
-}
-
-function actualizarListaGastos() {
-    const lista = document.getElementById('listaGastos');
-    lista.innerHTML = ''; // Limpiar lista
-    totalGeneral = 0;
-    
-    if (gastos.length === 0) {
-        lista.innerHTML = '<p style="text-align:center; color: #a0a0a0; margin-top: 20px;">No hay gastos registrados este mes.</p>';
-        document.getElementById('totalMes').textContent = '0.00';
-        return;
-    }
-
-    gastos.forEach((gasto, index) => {
-        totalGeneral += gasto.subtotal;
-        
-        // Crear Card (Diseño Móvil)
-        const card = document.createElement('div');
-        card.className = 'gasto-card';
-        card.innerHTML = `
-            <div class="gasto-info">
-                <span class="gasto-name">${gasto.producto}</span>
-                <span class="gasto-details">${gasto.cantidad} x ${gasto.precio.toFixed(2)}€</span>
-            </div>
-            <div style="display:flex; align-items:center;">
-                <span class="gasto-total">${gasto.subtotal.toFixed(2)}€</span>
-                <button onclick="borrarGasto(${index})" class="btn-delete" title="Borrar gasto">🗑️</button>
-            </div>
-        `;
-        lista.appendChild(card);
-    });
-    
-    document.getElementById('totalMes').textContent = totalGeneral.toFixed(2);
 }
 
 function borrarGasto(index) {
-    if(confirm(`¿Seguro que quieres borrar "${gastos[index].producto}"?`)) {
-        gastos.splice(index, 1);
-        guardarEnLocal();
-        actualizarInterfaz();
-    }
+    gastos.splice(index, 1);
+    localStorage.setItem('tope_gastos', JSON.stringify(gastos));
+    actualizarInterfaz();
 }
 
-function limpiarTodo() {
-    if (gastos.length > 0 && confirm("¿Estás seguro? Se borrarán TODOS los gastos del mes.")) {
-        gastos = [];
-        guardarEnLocal();
-        actualizarInterfaz();
-    }
-}
-
-function actualizarBarras() {
-    const container = document.getElementById('containerBarras');
-    container.innerHTML = '';
-    if (totalGeneral === 0) return;
+function actualizarInterfaz() {
+    const lista = document.getElementById('listaGastos');
+    const totalMes = document.getElementById('totalMes');
+    const containerBarras = document.getElementById('containerBarras');
     
-    // Agrupar gastos por producto para el gráfico
-    const gastosAgrupados = gastos.reduce((acc, gasto) => {
-        if (!acc[gasto.producto]) {
-            acc[gasto.producto] = 0;
-        }
-        acc[gasto.producto] += gasto.subtotal;
-        return acc;
-    }, {});
+    lista.innerHTML = '';
+    containerBarras.innerHTML = '';
+    let sumaTotal = 0;
 
-    // Ordenar de mayor a menor
-    const productosOrdenados = Object.entries(gastosAgrupados)
-        .sort((a, b) => b[1] - a[1]);
+    gastos.forEach((g, i) => {
+        sumaTotal += g.total;
+        
+        // Añadir a la lista
+        lista.innerHTML += `
+            <div class="gasto-item">
+                <div>
+                    <strong>${g.nombre}</strong><br>
+                    <small>${g.cantidad} x ${g.precio}€</small>
+                </div>
+                <div>
+                    <span>${g.total.toFixed(2)}€</span>
+                    <button class="btn-delete" onclick="borrarGasto(${i})">🗑️</button>
+                </div>
+            </div>`;
+    });
 
-    productosOrdenados.forEach(([producto, subtotal]) => {
-        const porcentaje = ((subtotal / totalGeneral) * 100).toFixed(1);
-        const barraDiv = document.createElement('div');
-        barraDiv.className = 'barra-item';
-        barraDiv.innerHTML = `
-            <div class="barra-label">
-                <span class="barra-name"><b>${producto}</b></span>
-                <span class="barra-percentage">${subtotal.toFixed(2)}€ (${porcentaje}%)</span>
-            </div>
-            <div class="barra-bg">
-                <div class="barra-fill" style="width:${porcentaje}%"></div>
-            </div>
-        `;
-        container.appendChild(barraDiv);
+    totalMes.textContent = sumaTotal.toFixed(2);
+
+    // Barras de progreso
+    gastos.forEach(g => {
+        const porc = ((g.total / sumaTotal) * 100).toFixed(1);
+        containerBarras.innerHTML += `
+            <div class="barra-item">
+                <small>${g.nombre} (${porc}%)</small>
+                <div class="barra-bg"><div class="barra-fill" style="width:${porc}%"></div></div>
+            </div>`;
     });
 }
