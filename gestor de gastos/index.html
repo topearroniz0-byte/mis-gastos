@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#28a745">
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
+  }
+</script>
+    <meta charset="UTF-8">
+    <title>Control de Gastos Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Gastos Mensuales</h1>
+        
+        <div class="input-section">
+            <input type="text" id="producto" placeholder="Producto">
+            <input type="number" id="cantidad" placeholder="Cant.">
+            <input type="number" id="precio" placeholder="Precio" step="0.01">
+            <button onclick="agregarGasto()">+</button>
+        </div>
+
+        <table id="tablaGastos">
+            <thead>
+                <tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Total</th><th>Editar</th></tr>
+            </thead>
+            <tbody id="cuerpoTabla"></tbody>
+        </table>
+
+        <div id="resumen">
+            <h3>Total: <span id="totalMes">0</span> €</h3>
+        </div>
+
+        <div class="barras-section">
+            <h3>📈 Gastos por producto (% del total)</h3>
+            <div id="containerBarras"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
