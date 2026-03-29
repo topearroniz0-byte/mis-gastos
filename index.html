@@ -6,38 +6,56 @@
     <title>Tope Byte - Finanzas</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js');
+        });
+      }
+    </script>
 </head>
 <body>
     <div class="container">
         <header class="main-header">
             <img src="logo.png" alt="Logo" class="app-logo">
-            <h1>Gastos Mensuales</h1>
+            <h1>Tope Byte Finanzas</h1>
         </header>
+
+        <div class="card budget-card">
+            <label for="sueldo">Presupuesto / Sueldo Mensual (€)</label>
+            <div class="input-row">
+                <input type="number" id="sueldo" placeholder="Ej: 1200" onchange="guardarSueldo()">
+                <div class="balance-info">
+                    <small>Te quedan:</small>
+                    <h3 id="restante">0.00€</h3>
+                </div>
+            </div>
+        </div>
 
         <div class="card input-card">
             <div class="input-group">
-                <input type="text" id="producto" placeholder="Nombre del producto">
+                <input type="text" id="producto" placeholder="¿Qué compraste?">
             </div>
             <div class="input-row">
-                <input type="number" id="cantidad" placeholder="Cant." min="1">
+                <input type="number" id="cantidad" placeholder="Cant.">
                 <input type="number" id="precio" placeholder="Precio €" step="0.01">
                 <button id="btnAgregar" onclick="agregarGasto()">Añadir</button>
             </div>
         </div>
 
         <div class="total-badge">
-            <small>Total Acumulado</small>
+            <small>Total Gastado</small>
             <h2><span id="totalMes">0.00</span>€</h2>
         </div>
 
         <div class="card list-card">
-            <div id="listaGastos" class="gastos-container">
-                </div>
+            <div id="listaGastos" class="gastos-container"></div>
         </div>
 
         <div class="card chart-card">
-            <h3>Distribución de Gastos</h3>
+            <h3>Distribución</h3>
             <div id="containerBarras"></div>
+            <button onclick="limpiarTodo()" class="btn-clear">Reiniciar Mes</button>
         </div>
     </div>
     <script src="script.js"></script>
