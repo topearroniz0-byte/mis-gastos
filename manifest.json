@@ -1,18 +1,24 @@
 {
-  "short_name": "GastosPro",
-  "name": "Control de Gastos Pro",
-  "description": "App para gestionar gastos diarios",
+  "short_name": "TopeByte",
+  "name": "Tope Byte - Finanzas Pro",
+  "description": "Gestor de presupuesto y gastos mensuales",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2652/2652234.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
     }
   ],
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#1a1a1a",
-  "theme_color": "#28a745"
+  "background_color": "#0f172a",
+  "theme_color": "#10b981"
 }
