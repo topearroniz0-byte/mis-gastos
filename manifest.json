@@ -1,7 +1,7 @@
 {
   "short_name": "TopeByte",
   "name": "Tope Byte - Finanzas Pro",
-  "id": "topearroniz0-byte.github.io/mis-gastos/",
+  "id": "/mis-gastos/",
   "description": "Gestor de presupuesto personal y control de gastos mensuales.",
   "categories": ["finance", "productivity"],
   "icons": [
@@ -18,7 +18,7 @@
       "purpose": "any"
     }
   ],
-  "start_url": "./index.html",
+  "start_url": "/mis-gastos/index.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0f172a",

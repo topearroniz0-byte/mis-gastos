@@ -1,27 +1,21 @@
-const CACHE_NAME = 'topebyte-v3'; // Versión actualizada
+const CACHE_NAME = 'topebyte-v4'; // Subimos a v4
 const ASSETS = [
-  './',
-  './index.html',
-  './style.css',
-  './script.js',
-  './manifest.json',
-  './logo.png'
+  '/mis-gastos/',
+  '/mis-gastos/index.html',
+  '/mis-gastos/style.css',
+  '/mis-gastos/script.js',
+  '/mis-gastos/manifest.json',
+  '/mis-gastos/logo.png'
 ];
 
-// Instalación: Guarda los archivos en la caché
 self.addEventListener('install', (e) => {
-  self.skipWaiting(); // Fuerza a que el nuevo SW se active inmediatamente
+  self.skipWaiting();
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('SW: Cacheando archivos');
-      return cache.addAll(ASSETS);
-    })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
 });
 
-// Activación: Limpia versiones viejas de la caché
 self.addEventListener('activate', (e) => {
-  console.log('SW: Activado');
   e.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
@@ -31,11 +25,8 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Estrategia: Primero busca en caché, si no hay, busca en la red
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then((res) => {
-      return res || fetch(e.request);
-    })
+    caches.match(e.request).then((res) => res || fetch(e.request))
   );
 });
