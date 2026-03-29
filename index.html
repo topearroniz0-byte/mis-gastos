@@ -20,14 +20,14 @@
 <body>
     <div class="container">
         <header class="main-header" style="flex-direction: column; text-align: center;">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
-        <img src="logo.png" alt="Logo" class="app-logo">
-        <h1>Tope Byte Finanzas</h1>
-    </div>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px; max-width: 320px; line-height: 1.4;">
-        Gestiona tu presupuesto mensual de forma sencilla. Controla tus gastos en tiempo real y visualiza cuánto te queda disponible para acabar el mes sin sobresaltos.
-    </p>
-</header>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+                <img src="logo.png" alt="Logo" class="app-logo">
+                <h1>Tope Byte Finanzas</h1>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px; max-width: 320px; line-height: 1.4;">
+                Gestiona tu presupuesto mensual de forma sencilla. Controla tus gastos en tiempo real y visualiza cuánto te queda disponible para acabar el mes sin sobresaltos.
+            </p>
+        </header>
 
         <div id="installContainer" style="display: none; margin-bottom: 20px;">
             <button id="btnInstall" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">
@@ -71,6 +71,15 @@
             <div id="containerBarras"></div>
             <button onclick="limpiarTodo()" class="btn-clear">Reiniciar Mes</button>
         </div>
+
+        <footer style="text-align: center; padding: 20px 0; margin-top: 10px;">
+            <p style="color: var(--text-muted); font-size: 0.8rem; opacity: 0.6; margin: 0;">
+                Tope Byte - Finanzas Pro
+            </p>
+            <p style="color: var(--accent); font-size: 0.75rem; font-weight: bold; margin: 4px 0 0 0;">
+                Versión 1.0.3
+            </p>
+        </footer>
     </div>
 
     <script>
@@ -78,26 +87,21 @@
         const installContainer = document.getElementById('installContainer');
         const btnInstall = document.getElementById('btnInstall');
 
-        // Escucha cuando el navegador detecta que la app se puede instalar
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); // Detiene el aviso automático
-            deferredPrompt = e;  // Guarda el evento
-            installContainer.style.display = 'block'; // Muestra nuestro botón
+            e.preventDefault();
+            deferredPrompt = e;
+            installContainer.style.display = 'block';
         });
 
         btnInstall.addEventListener('click', async () => {
             if (deferredPrompt) {
-                deferredPrompt.prompt(); // Lanza el aviso de Android
+                deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('El usuario instaló la app');
-                }
                 deferredPrompt = null;
                 installContainer.style.display = 'none';
             }
         });
 
-        // Ocultar si ya se instaló
         window.addEventListener('appinstalled', () => {
             installContainer.style.display = 'none';
         });

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'topebyte-v5';
+const CACHE_NAME = 'topebyte-v7';
 const ASSETS = [
   './',
   './index.html',
