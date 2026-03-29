@@ -1,27 +1,20 @@
 {
   "short_name": "TopeByte",
   "name": "Tope Byte - Finanzas Pro",
-  "description": "Gestor de presupuesto y gastos mensuales con protección de datos local",
-  "categories": ["finance", "productivity"],
+  "id": "/mis-gastos/",
+  "description": "Calculadora de presupuesto personal de uso privado para gestión de gastos mensuales.",
+  "categories": ["finance"],
   "icons": [
     {
       "src": "logo.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "logo.png",
-      "type": "image/png",
-      "sizes": "192x192",
       "purpose": "any"
     }
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "display_override": ["window-controls-overlay"],
-  "orientation": "portrait",
   "background_color": "#0f172a",
   "theme_color": "#10b981",
-  "prefer_related_applications": false
+  "scope": "/mis-gastos/"
 }
