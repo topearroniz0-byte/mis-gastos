@@ -209,3 +209,12 @@ button {
     .watermark { max-width: 60px; }
     .barra-bg { height: 16px; }
 }
+.container {
+    position: relative; /* Esto ayuda a que el logo se quede en su sitio */
+    padding-top: 50px;  /* Deja espacio arriba para el logo y el título */
+}
+
+h1 {
+    font-size: 1.5rem;   /* Un poco más pequeño para que quepa bien en Android */
+    margin-bottom: 1rem;
+}
