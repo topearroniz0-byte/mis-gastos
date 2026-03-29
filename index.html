@@ -6,7 +6,7 @@
     <title>Tope Byte - Gastos</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a1a1a">
+    <meta name="theme-color" content="#28a745">
     <link rel="stylesheet" href="style.css">
 
     <script>
@@ -18,36 +18,42 @@
     </script>
 </head>
 <body>
-    <div class="app-container">
-        <img src="logo.png" alt="Tope Byte" class="watermark">
-
-        <header>
-            <h1>📊 Mis Gastos</h1>
+    <div class="container">
+        <header style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px;">
+            <img src="logo.png" alt="Logo TOPE BYTE" style="max-width: 45px; height: auto;">
+            <h1 style="font-size: 1.6rem; margin: 0; color: #e0e0e0;">Gastos Mensuales</h1>
         </header>
+        
+        <div class="input-section">
+            <input type="text" id="producto" placeholder="Producto">
+            <input type="number" id="cantidad" placeholder="Cant.">
+            <input type="number" id="precio" placeholder="Precio (€)" step="0.01">
+            <button onclick="agregarGasto()">+</button>
+        </div>
 
-        <section class="input-panel">
-            <div class="input-group">
-                <input type="text" id="producto" placeholder="¿Qué compraste?">
-            </div>
-            <div class="input-row">
-                <input type="number" id="cantidad" placeholder="Cant.">
-                <input type="number" id="precio" placeholder="Precio (€)" step="0.01">
-                <button onclick="agregarGasto()" class="btn-add">+</button>
-            </div>
-        </section>
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 10px;">
+            <table id="tablaGastos">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cant.</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla"></tbody>
+            </table>
+        </div>
 
-        <section class="gastos-list" id="listaGastos">
-            </section>
+        <div id="resumen">
+            <h3>Total: <span id="totalMes">0.00</span> €</h3>
+        </div>
 
-        <footer class="resumen-panel">
-            <h2>Total Mes: <span id="totalMes">0.00</span> €</h2>
-            <button onclick="limpiarTodo()" class="btn-clear">Limpiar Mes</button>
-        </footer>
-
-        <section class="chart-section">
-            <h3>📈 Distribución</h3>
-            <div id="containerBarras" class="chart-container"></div>
-        </section>
+        <div class="barras-section">
+            <h3>📈 Gastos por producto</h3>
+            <div id="containerBarras"></div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
