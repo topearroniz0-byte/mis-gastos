@@ -1,11 +1,11 @@
-const CACHE_NAME = 'topebyte-v4'; // Subimos a v4
+const CACHE_NAME = 'topebyte-v5';
 const ASSETS = [
-  '/mis-gastos/',
-  '/mis-gastos/index.html',
-  '/mis-gastos/style.css',
-  '/mis-gastos/script.js',
-  '/mis-gastos/manifest.json',
-  '/mis-gastos/logo.png'
+  './',
+  './index.html',
+  './style.css',
+  './script.js',
+  './manifest.json',
+  './logo.png'
 ];
 
 self.addEventListener('install', (e) => {

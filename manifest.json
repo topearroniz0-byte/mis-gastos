@@ -1,28 +1,25 @@
 {
   "short_name": "TopeByte",
   "name": "Tope Byte - Finanzas Pro",
-  "id": "/mis-gastos/",
-  "description": "Gestor de presupuesto personal y control de gastos mensuales.",
-  "categories": ["finance", "productivity"],
+  "description": "Gestor de presupuesto personal.",
   "icons": [
-    {
-      "src": "logo.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any"
-    },
     {
       "src": "logo.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any"
+    },
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
     }
   ],
-  "start_url": "/mis-gastos/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0f172a",
   "theme_color": "#10b981",
-  "scope": "/mis-gastos/",
-  "lang": "es-ES"
+  "scope": "./"
 }
