@@ -1,7 +1,8 @@
 {
   "short_name": "TopeByte",
   "name": "Tope Byte - Finanzas Pro",
-  "description": "Gestor de presupuesto y gastos mensuales",
+  "description": "Gestor de presupuesto y gastos mensuales con protección de datos local",
+  "categories": ["finance", "productivity"],
   "icons": [
     {
       "src": "logo.png",
@@ -18,7 +19,9 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
+  "display_override": ["window-controls-overlay"],
   "orientation": "portrait",
   "background_color": "#0f172a",
-  "theme_color": "#10b981"
+  "theme_color": "#10b981",
+  "prefer_related_applications": false
 }
