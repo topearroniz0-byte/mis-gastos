@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#28a745">
-
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js');
-  }
-</script>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Control de Gastos Pro</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#28a745">
     <link rel="stylesheet" href="style.css">
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW registrado'))
+            .catch(err => console.log('Error SW', err));
+        });
+      }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -24,19 +30,27 @@
             <button onclick="agregarGasto()">+</button>
         </div>
 
-        <table id="tablaGastos">
-            <thead>
-                <tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Total</th><th>Editar</th></tr>
-            </thead>
-            <tbody id="cuerpoTabla"></tbody>
-        </table>
+        <div style="overflow-x: auto;">
+            <table id="tablaGastos">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cant.</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla"></tbody>
+            </table>
+        </div>
 
         <div id="resumen">
             <h3>Total: <span id="totalMes">0</span> €</h3>
         </div>
 
         <div class="barras-section">
-            <h3>📈 Gastos por producto (% del total)</h3>
+            <h3>📈 Gastos por producto</h3>
             <div id="containerBarras"></div>
         </div>
     </div>
