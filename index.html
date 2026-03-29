@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tope Byte - Finanzas</title>
+    <title>Tope Byte - Finanzas Pro</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('Listo'))
-        .catch(err => console.error('Fallo', err));
-    });
-  }
-</script>
+      // Registro del Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW listo'))
+            .catch(err => console.log('Error SW', err));
+        });
+      }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -22,6 +23,12 @@
             <img src="logo.png" alt="Logo" class="app-logo">
             <h1>Tope Byte Finanzas</h1>
         </header>
+
+        <div id="installContainer" style="display: none; margin-bottom: 20px;">
+            <button id="btnInstall" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">
+                <span style="font-size: 1.2rem;">📲</span> Instalar Aplicación Pro
+            </button>
+        </div>
 
         <div class="card budget-card">
             <label for="sueldo">Presupuesto / Sueldo Mensual (€)</label>
@@ -60,6 +67,37 @@
             <button onclick="limpiarTodo()" class="btn-clear">Reiniciar Mes</button>
         </div>
     </div>
+
+    <script>
+        let deferredPrompt;
+        const installContainer = document.getElementById('installContainer');
+        const btnInstall = document.getElementById('btnInstall');
+
+        // Escucha cuando el navegador detecta que la app se puede instalar
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); // Detiene el aviso automático
+            deferredPrompt = e;  // Guarda el evento
+            installContainer.style.display = 'block'; // Muestra nuestro botón
+        });
+
+        btnInstall.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // Lanza el aviso de Android
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('El usuario instaló la app');
+                }
+                deferredPrompt = null;
+                installContainer.style.display = 'none';
+            }
+        });
+
+        // Ocultar si ya se instaló
+        window.addEventListener('appinstalled', () => {
+            installContainer.style.display = 'none';
+        });
+    </script>
+
     <script src="script.js"></script>
 </body>
 </html>
