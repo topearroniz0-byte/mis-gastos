@@ -1,0 +1,18 @@
+{
+  "short_name": "GastosPro",
+  "name": "Control de Gastos Pro",
+  "description": "App para gestionar gastos diarios",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2652/2652234.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1a1a",
+  "theme_color": "#28a745"
+}

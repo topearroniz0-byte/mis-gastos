@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Control de Gastos Pro</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#28a745">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW registrado'))
+            .catch(err => console.log('Error SW', err));
+        });
+      }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Gastos Mensuales</h1>
+        
+        <div class="input-section">
+            <input type="text" id="producto" placeholder="Producto">
+            <input type="number" id="cantidad" placeholder="Cant.">
+            <input type="number" id="precio" placeholder="Precio" step="0.01">
+            <button onclick="agregarGasto()">+</button>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table id="tablaGastos">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cant.</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla"></tbody>
+            </table>
+        </div>
+
+        <div id="resumen">
+            <h3>Total: <span id="totalMes">0</span> €</h3>
+        </div>
+
+        <div class="barras-section">
+            <h3>📈 Gastos por producto</h3>
+            <div id="containerBarras"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
