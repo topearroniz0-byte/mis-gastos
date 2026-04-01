@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <script>
-      // Registro del Service Worker
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js')
@@ -24,19 +23,24 @@
                 <img src="logo.png" alt="Logo" class="app-logo">
                 <h1>Tope Byte Finanzas</h1>
             </div>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px; max-width: 320px; line-height: 1.4;">
-                Gestiona tu presupuesto mensual de forma sencilla. Controla tus gastos en tiempo real y visualiza cuánto te queda disponible para acabar el mes sin sobresaltos.
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px; max-width: 320px; line-height: 1.4; margin-bottom: 0;">
+                Gestiona tu presupuesto mensual de forma sencilla. Controla tus gastos en tiempo real.
             </p>
+            <div style="margin-top: 15px;">
+                <button id="toggleMoneda" onclick="alternarMoneda()" style="background: #334155; color: var(--accent); border: 1px solid var(--accent); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: all 0.3s;">
+                    Cambiar a Dólares (USD)
+                </button>
+            </div>
         </header>
 
         <div id="installContainer" style="display: none; margin-bottom: 20px;">
             <button id="btnInstall" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">
-                <span style="font-size: 1.2rem;">📲</span> Instalar Aplicación Pro
+                <span>📲</span> Instalar Aplicación Pro
             </button>
         </div>
 
         <div class="card budget-card">
-            <label for="sueldo">Presupuesto / Sueldo Mensual (€)</label>
+            <label for="sueldo">Presupuesto / Sueldo Mensual (<span id="labelMonedaSueldo">€</span>)</label>
             <div class="input-row">
                 <input type="number" id="sueldo" placeholder="Ej: 1200" onchange="guardarSueldo()">
                 <div class="balance-info">
@@ -52,14 +56,14 @@
             </div>
             <div class="input-row">
                 <input type="number" id="cantidad" placeholder="Cant.">
-                <input type="number" id="precio" placeholder="Precio €" step="0.01">
+                <input type="number" id="precio" placeholder="Precio" step="0.01">
                 <button id="btnAgregar" onclick="agregarGasto()">Añadir</button>
             </div>
         </div>
 
         <div class="total-badge">
             <small>Total Gastado</small>
-            <h2><span id="totalMes">0.00</span>€</h2>
+            <h2><span id="totalMes">0.00</span><span id="simboloTotal">€</span></h2>
         </div>
 
         <div class="card list-card">
@@ -73,12 +77,8 @@
         </div>
 
         <footer style="text-align: center; padding: 20px 0; margin-top: 10px;">
-            <p style="color: var(--text-muted); font-size: 0.8rem; opacity: 0.6; margin: 0;">
-                Tope Byte - Finanzas Pro
-            </p>
-            <p style="color: var(--accent); font-size: 0.75rem; font-weight: bold; margin: 4px 0 0 0;">
-                Versión 1.0.3
-            </p>
+            <p style="color: var(--text-muted); font-size: 0.8rem; opacity: 0.6; margin: 0;">Tope Byte - Finanzas Pro</p>
+            <p style="color: var(--accent); font-size: 0.75rem; font-weight: bold; margin: 4px 0 0 0;">Versión 1.0.4</p>
         </footer>
     </div>
 
@@ -106,7 +106,6 @@
             installContainer.style.display = 'none';
         });
     </script>
-
     <script src="script.js"></script>
 </body>
 </html>

@@ -99,3 +99,13 @@ input {
 .barra-item { margin-bottom: 15px; }
 .barra-bg { background: #334155; border-radius: 10px; height: 10px; width: 100%; overflow: hidden; }
 .barra-fill { background: var(--accent); height: 100%; transition: width 0.5s ease; }
+#toggleMoneda:active {
+    transform: scale(0.95);
+    background: var(--accent);
+    color: white;
+}
+
+/* Ajuste para que el input de sueldo muestre la moneda dinámica */
+.budget-card .input-row {
+    position: relative;
+}

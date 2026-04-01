@@ -2,14 +2,34 @@
 let gastos = JSON.parse(localStorage.getItem('tope_gastos')) || [];
 let sueldo = parseFloat(localStorage.getItem('tope_sueldo')) || 0;
 
-// Al cargar la página, rellenar el sueldo si existe y mostrar la lista
+// --- LÓGICA DE MONEDA ---
+let monedaActual = localStorage.getItem('tope_moneda') || '€';
+
 window.onload = () => {
     const sueldoInput = document.getElementById('sueldo');
     if (sueldoInput && sueldo > 0) {
         sueldoInput.value = sueldo;
     }
+    
+    // Sincronizar texto del botón al cargar
+    actualizarBotonMoneda();
     actualizarInterfaz();
 };
+
+function alternarMoneda() {
+    monedaActual = (monedaActual === '€') ? '$' : '€';
+    localStorage.setItem('tope_moneda', monedaActual);
+    
+    actualizarBotonMoneda();
+    actualizarInterfaz();
+}
+
+function actualizarBotonMoneda() {
+    const btn = document.getElementById('toggleMoneda');
+    if (btn) {
+        btn.textContent = monedaActual === '€' ? 'Cambiar a Dólares (USD)' : 'Cambiar a Euros (EUR)';
+    }
+}
 
 function guardarSueldo() {
     const sueldoInput = document.getElementById('sueldo');
@@ -31,7 +51,6 @@ function agregarGasto() {
     const cant = parseFloat(cantInput.value);
     const prec = parseFloat(precInput.value);
 
-    // Validación básica
     if (prod && cant > 0 && prec > 0) {
         gastos.push({ 
             nombre: prod, 
@@ -42,7 +61,6 @@ function agregarGasto() {
         localStorage.setItem('tope_gastos', JSON.stringify(gastos));
         actualizarInterfaz();
         
-        // Limpiar campos del formulario
         prodInput.value = '';
         cantInput.value = '';
         precInput.value = '';
@@ -66,6 +84,8 @@ function limpiarTodo() {
         localStorage.clear();
         const sueldoInput = document.getElementById('sueldo');
         if (sueldoInput) sueldoInput.value = '';
+        // Tras borrar todo, reiniciamos moneda a defecto si lo deseas, 
+        // o mantenemos la actual:
         actualizarInterfaz();
     }
 }
@@ -76,7 +96,10 @@ function actualizarInterfaz() {
     const restanteLabel = document.getElementById('restante');
     const containerBarras = document.getElementById('containerBarras');
     
-    // Verificar que los elementos existen antes de usarlos
+    // Elementos del HTML que añadimos en el paso anterior para que el símbolo cambie
+    const labelMonedaSueldo = document.getElementById('labelMonedaSueldo');
+    const simboloTotal = document.getElementById('simboloTotal');
+    
     if (!lista || !totalMesLabel || !restanteLabel || !containerBarras) return;
 
     lista.innerHTML = '';
@@ -90,24 +113,26 @@ function actualizarInterfaz() {
             <div class="gasto-item">
                 <div>
                     <strong>${g.nombre}</strong><br>
-                    <small>${g.cantidad} x ${g.precio.toFixed(2)}€</small>
+                    <small>${g.cantidad} x ${g.precio.toFixed(2)}${monedaActual}</small>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px">
-                    <span style="font-weight:bold">${g.total.toFixed(2)}€</span>
+                    <span style="font-weight:bold">${g.total.toFixed(2)}${monedaActual}</span>
                     <button onclick="borrarGasto(${i})" style="background:none; border:none; cursor:pointer; font-size:1.2rem;">🗑️</button>
                 </div>
             </div>`;
     });
 
-    // Actualizar los totales
+    // Actualizar Totales numéricos
     totalMesLabel.textContent = sumaTotal.toFixed(2);
     const restante = sueldo - sumaTotal;
-    restanteLabel.textContent = restante.toFixed(2) + "€";
-    
-    // Cambiar color si el presupuesto es negativo
+    restanteLabel.textContent = restante.toFixed(2) + monedaActual;
     restanteLabel.style.color = restante < 0 ? "#ef4444" : "#3b82f6";
 
-    // Dibujar las barras de distribución
+    // ACTUALIZACIÓN DE SÍMBOLOS ESTÁTICOS
+    if (labelMonedaSueldo) labelMonedaSueldo.textContent = monedaActual;
+    if (simboloTotal) simboloTotal.textContent = monedaActual;
+
+    // Dibujar las barras
     gastos.forEach(g => {
         const porc = sumaTotal > 0 ? ((g.total / sumaTotal) * 100).toFixed(1) : 0;
         containerBarras.innerHTML += `
