@@ -29,7 +29,7 @@ body {
     margin-bottom: 25px;
 }
 
-.app-logo { max-width: 250px; height: auto; }
+.app-logo { max-width: 500px; height: auto; }
 
 .card {
     background: var(--card-bg);
