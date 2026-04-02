@@ -19,19 +19,66 @@
 <body>
     <div class="container">
         <header class="main-header" style="flex-direction: column; text-align: center;">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
-                <img src="logo.png" alt="Logo" class="app-logo">
-                <h1>Tope Byte Finanzas</h1>
-            </div>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px; max-width: 320px; line-height: 1.4; margin-bottom: 0;">
-                Gestiona tu presupuesto mensual de forma sencilla. Controla tus gastos en tiempo real.
-            </p>
-            <div style="margin-top: 15px;">
-                <button id="toggleMoneda" onclick="alternarMoneda()" style="background: #334155; color: var(--accent); border: 1px solid var(--accent); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: all 0.3s;">
-                    Cambiar a Dólares (USD)
+    <div style="display: flex; justify-content: center; margin-bottom: 15px;">
+        <img src="logo.png" alt="Logo" class="app-logo">
+    </div>
+
+    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 5px;">
+        <h1>Tope Byte Finanzas</h1>
+    </div>
+
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px; max-width: 320px; line-height: 1.4; margin-bottom: 0;">
+        Gestiona tu presupuesto mensual de forma sencilla. Controla tus gastos en tiempo real.
+    </p>
+    
+    <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button id="toggleMoneda" onclick="alternarMoneda()" style="background: #334155; color: var(--accent); border: 1px solid var(--accent); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: all 0.3s;">
+            Cambiar a Dólares (USD)
+        </button>
+        <button onclick="abrirConversor()" style="background: #1e293b; color: #f8fafc; border: 1px solid #475569; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.8rem;">
+            💱 Conversor
+        </button>
+    </div>
+</header>
+
+        <div id="modalConversor" class="modal-overlay" style="display: none;">
+            <div class="card modal-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; color: var(--accent);">Calculadora Pro</h3>
+                    <button onclick="cerrarConversor()" style="background: none; border: none; color: var(--text-muted); font-size: 1.8rem; cursor: pointer; line-height: 1;">&times;</button>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 5px;">Cantidad a convertir</label>
+                    <input type="number" id="convMonto" placeholder="0.00" oninput="calcularConversion()">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin-bottom: 20px;">
+                    <select id="monedaDe" class="select-moneda" onchange="calcularConversion()">
+                        <option value="EUR">EUR (€)</option>
+                        <option value="USD">USD ($)</option>
+                        <option value="MXN">MXN ($)</option>
+                        <option value="GBP">GBP (£)</option>
+                    </select>
+                    <span style="color: var(--accent); font-weight: bold;">➔</span>
+                    <select id="monedaA" class="select-moneda" onchange="calcularConversion()">
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="MXN">MXN ($)</option>
+                        <option value="GBP">GBP (£)</option>
+                    </select>
+                </div>
+
+                <div style="text-align: center; background: #0f172a; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #334155;">
+                    <small style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem;">Resultado Estimado</small>
+                    <h2 style="margin: 5px 0; color: var(--text);"><span id="convResultado">0.00</span></h2>
+                </div>
+
+                <button onclick="usarResultado()" style="width: 100%; background: var(--accent); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);">
+                    Aplicar a nuevo gasto
                 </button>
             </div>
-        </header>
+        </div>
 
         <div id="installContainer" style="display: none; margin-bottom: 20px;">
             <button id="btnInstall" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">
@@ -78,11 +125,12 @@
 
         <footer style="text-align: center; padding: 20px 0; margin-top: 10px;">
             <p style="color: var(--text-muted); font-size: 0.8rem; opacity: 0.6; margin: 0;">Tope Byte - Finanzas Pro</p>
-            <p style="color: var(--accent); font-size: 0.75rem; font-weight: bold; margin: 4px 0 0 0;">Versión 1.0.4</p>
+            <p style="color: var(--accent); font-size: 0.75rem; font-weight: bold; margin: 4px 0 0 0;">Versión 1.0.5</p>
         </footer>
     </div>
 
     <script>
+        // Lógica de PWA (Instalación)
         let deferredPrompt;
         const installContainer = document.getElementById('installContainer');
         const btnInstall = document.getElementById('btnInstall');

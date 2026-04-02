@@ -145,3 +145,44 @@ function actualizarInterfaz() {
             </div>`;
     });
 }
+// --- LÓGICA DEL CONVERSOR ---
+
+// Tasas de cambio de referencia (Base 1 EUR)
+const tasasCambio = {
+    "EUR": 1,
+    "USD": 1.08,
+    "MXN": 18.50,
+    "GBP": 0.85
+};
+
+function abrirConversor() {
+    document.getElementById('modalConversor').style.display = 'flex';
+}
+
+function cerrarConversor() {
+    document.getElementById('modalConversor').style.display = 'none';
+}
+
+function calcularConversion() {
+    const monto = parseFloat(document.getElementById('convMonto').value) || 0;
+    const de = document.getElementById('monedaDe').value;
+    const a = document.getElementById('monedaA').value;
+
+    // Convertir la entrada a la base (EUR) y luego a la moneda destino
+    const montoEnEur = monto / tasasCambio[de];
+    const resultado = montoEnEur * tasasCambio[a];
+
+    document.getElementById('convResultado').textContent = resultado.toFixed(2);
+}
+
+function usarResultado() {
+    const resultado = document.getElementById('convResultado').textContent;
+    const inputPrecio = document.getElementById('precio');
+    
+    if (inputPrecio && resultado !== "0.00") {
+        inputPrecio.value = resultado;
+        cerrarConversor();
+        // Feedback visual para el usuario
+        inputPrecio.focus();
+    }
+}
